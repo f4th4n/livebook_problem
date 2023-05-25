@@ -2,19 +2,19 @@ version: "3.9"
 
 
 services:
-  greeter:
-    hostname: greeter.local
-    build: .
+  greeter.local:
+    build: ./greeter
+    command: /bin/sh -c "elixir --name greeter@greeter.local --cookie secret -S mix run --no-halt"
     environment:
       RELEASE_DISTRIBUTION: name
       RELEASE_NODE: greeter@greeter.local
       RELEASE_COOKIE: secret
 
-  livebook:
-    hostname: livebook.local
-    image: ghcr.io/livebook-dev/livebook:0.9.2
+  livebook.local:
+    image: ghcr.io/livebook-dev/livebook:latest
     volumes:
-      - ./apps:/apps
+      - ./storage/data:/data
+      - ./storage/apps:/apps
     environment:
       LIVEBOOK_DEFAULT_RUNTIME: attached:greeter@greeter.local:secret
       LIVEBOOK_COOKIE: secret
@@ -28,7 +28,7 @@ services:
       LIVEBOOK_SECRET_KEY_BASE: 7ki4hExM22rWQ5wdnp00mlcmLg5en+uqJ90YKM45vVAVU4lA4Xl8jMCpGw4zlMfW
       LIVEBOOK_PASSWORD: secretsecret
     depends_on:
-      - greeter
+      - greeter.local
     ports:
       - 4100:4100
       - 4101:4101

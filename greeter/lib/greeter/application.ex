@@ -16,5 +16,6 @@ defmodule Greeter.Application do
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Greeter.Supervisor]
     Supervisor.start_link(children, opts)
+    |> IO.inspect(label: "Greeter is ready!")
   end
 end
